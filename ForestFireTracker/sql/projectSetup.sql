@@ -1,3 +1,5 @@
+declare @emailadd = varchar(64) + '@' + varchar(255);
+
 Drop Table animals;--done
 Drop Table forestFires;--done
 Drop Table countries;--done
@@ -90,4 +92,37 @@ Create Table geogRanges
     lonMax float not null,
     primary key(latMin, latMax, lonMin, lonMax),
     foreign key(rname) references regions(rname)
+);
+
+Create Table reports
+(
+    title varchar(60) not null,
+    createDate timestamp not null,
+    publishDate date not null,
+    startTime timestamp not null,
+    endTime timestamp not null,
+    email varchar(320) not null unique,
+    primary key(title, createDate),
+    foreign key(startTime) references forestFires(startTime, endTime),
+    foreign key(endTime) references forestFires(startTime, endTime),
+    foreign key(email) references authors(email)
+);
+
+Create Table authors(
+    email varchar(320) not null,
+    name varchar (50) not null,
+    title varchar(60) not null,
+    primary key(email) unique,
+    foreign key(title) references reports(title)
+);
+
+Create Table zones(
+    surfaceArea float not null,
+    startTime timestamp not null,
+    endTime timestamp not null,
+    fname varchar(30) not null,
+    primary key(surfaceArea),
+    foreign key(startTime) references forestFires(startTime,endTime),
+    foreign key(endTime) references forestFires(startTime,endTime),
+    foreign key(fname) references forests(fname)
 );
