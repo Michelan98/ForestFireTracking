@@ -53,10 +53,19 @@ Create Table forestFires
     endTime timestamp not null,
     surfaceArea float, -- Is the zones table really needed?
     fname varchar(30) not null,
-    createDate date not null,
+
+    createDate date not null, --from reports
+    title varchar(60) not null,
+
+    unique startTime, --Make primary keys unique for references
+    unique endTime,
+
     primary key(startTime, endTime),
     foreign key(fname) references forests(fname),
+
     foreign key(createDate) references reports(createDate),
+    foreign key(title) references reports(title), --forgot to include second primary key in reports
+
     foreign key(surfaceArea) references zones(surfaceArea)
 );
 
@@ -67,6 +76,10 @@ Create Table populations
     density float,
     headcount integer,
     endangered boolean,
+
+    unique species, --Should we bother adding this, there are no references to population entity
+    unique fname,
+
     primary key(species, fname),
     foreign key(species) references animals(species),
     foreign key(fname) references forests(fname)
@@ -103,6 +116,10 @@ Create Table reports
     startTime timestamp not null,
     endTime timestamp not null,
     email varchar(320) not null,
+
+    unique title, --Make primary keys unique for references
+    unique createDate,
+
     primary key(title, createDate),
     foreign key(startTime) references forestFires(startTime),
     foreign key(endTime) references forestFires(endTime),
