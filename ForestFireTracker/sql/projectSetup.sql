@@ -47,18 +47,59 @@ Create Table forests
     foreign key(rname) references regions(rname)
 );
 
+Create Table zones(
+    surfaceArea float not null,
+    fname varchar(30) not null,
+    primary key(surfaceArea),
+    foreign key(fname) references forests(fname)
+);
+
 Create Table forestFires
 (
     startTime timestamp not null,
     endTime timestamp not null,
     surfaceArea float, -- Is the zones table really needed?
     fname varchar(30) not null,
-    createDate date not null,
+
+    unique(startTime),
+    unique(endTime),
+
     primary key(startTime, endTime),
     foreign key(fname) references forests(fname),
-    foreign key(createDate) references reports(createDate),
     foreign key(surfaceArea) references zones(surfaceArea)
+
 );
+
+Create Table reports
+(
+    title varchar(60) not null,
+    createDate timestamp not null,
+    publishDate date not null,
+    startTime timestamp not null,
+    endTime timestamp not null,
+    email varchar(320) not null,
+
+    unique(title),
+    unique(createDate),
+
+    primary key(title, createDate),
+    foreign key(startTime) references forestFires(startTime),
+    foreign key(endTime) references forestFires(endTime)
+);
+
+Create Table authors(
+
+    email varchar(320) not null,
+    name varchar (50) not null,
+    title varchar(60) not null,
+    createDate timestamp not null,
+
+
+    primary key(email),
+    foreign key(title) references reports(title),
+    foreign key(createDate) references reports(createDate)
+);
+
 
 Create Table populations
 (
@@ -67,6 +108,8 @@ Create Table populations
     density float,
     headcount integer,
     endangered boolean,
+
+
     primary key(species, fname),
     foreign key(species) references animals(species),
     foreign key(fname) references forests(fname)
@@ -93,37 +136,4 @@ Create Table geogRanges
     lonMax float not null,
     primary key(latMin, latMax, lonMin, lonMax),
     foreign key(rname) references regions(rname)
-);
-
-Create Table reports
-(
-    title varchar(60) not null,
-    createDate timestamp not null,
-    publishDate date not null,
-    startTime timestamp not null,
-    endTime timestamp not null,
-    email varchar(320) not null,
-    primary key(title, createDate),
-    foreign key(startTime) references forestFires(startTime),
-    foreign key(endTime) references forestFires(endTime),
-    foreign key(email) references authors(email)
-);
-
-Create Table authors(
-    email varchar(320) not null,
-    name varchar (50) not null,
-    title varchar(60) not null,
-    primary key(email),
-    foreign key(title) references reports(title)
-);
-
-Create Table zones(
-    surfaceArea float not null,
-    startTime timestamp not null,
-    endTime timestamp not null,
-    fname varchar(30) not null,
-    primary key(surfaceArea),
-    foreign key(startTime) references forestFires(startTime),
-    foreign key(endTime) references forestFires(endTime),
-    foreign key(fname) references forests(fname)
 );
