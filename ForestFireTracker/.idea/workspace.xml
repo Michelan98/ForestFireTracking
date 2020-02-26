@@ -29,8 +29,8 @@
       <file leaf-file-name="projectSetup.sql" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/sql/projectSetup.sql">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="426">
-              <caret line="130" column="1" lean-forward="true" selection-start-line="130" selection-start-column="1" selection-end-line="130" selection-end-column="1" />
+            <state relative-caret-position="358">
+              <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
             </state>
           </provider>
         </entry>
@@ -177,12 +177,12 @@
       <workItem from="1582250429570" duration="592000" />
       <workItem from="1582404342491" duration="698000" />
       <workItem from="1582571926701" duration="7195000" />
-      <workItem from="1582729289569" duration="2925000" />
+      <workItem from="1582729289569" duration="3871000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11952000" />
+    <option name="totallyTimeSpent" value="12898000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1724" y="60" width="1440" height="877" extended-state="0" />
@@ -302,8 +302,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/sql/projectSetup.sql">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="426">
-          <caret line="130" column="1" lean-forward="true" selection-start-line="130" selection-start-column="1" selection-end-line="130" selection-end-column="1" />
+        <state relative-caret-position="358">
+          <caret line="69" lean-forward="true" selection-start-line="69" selection-end-line="69" />
         </state>
       </provider>
     </entry>

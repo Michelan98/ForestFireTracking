@@ -137,6 +137,3 @@ Create Table geogRanges
     primary key(latMin, latMax, lonMin, lonMax),
     foreign key(rname) references regions(rname)
 );
-
-
-
