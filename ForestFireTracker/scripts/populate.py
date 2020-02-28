@@ -39,11 +39,16 @@ def populate_forests(regions):
     Generate a list of forests
     Needs regions
     using xml files?
+    
+    :param regions list:
+        List of regions
     """
 
 def populate_fires(forests):
     """
     look at an actual database for those?
+    :param forests list:
+        list of forests, need a forest in order to have a forest fire
     """
 
 def populate_reports(fires):
