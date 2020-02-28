@@ -83,7 +83,7 @@ def populate_authors(reports):
         title = report_tuple[2]
         createDate = report_tuple[0]
         authors.append((email, name, title, createDate))
-    return authors 
+    return authors
 
 def populate_animals():
     """
