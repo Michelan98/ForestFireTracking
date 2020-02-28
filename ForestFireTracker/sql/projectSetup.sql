@@ -102,11 +102,9 @@ Create Table reports
     publishDate date not null,
     startTime timestamp not null,
     endTime timestamp not null,
-    email varchar(320) not null,
     primary key(title, createDate),
     foreign key(startTime) references forestFires(startTime),
-    foreign key(endTime) references forestFires(endTime),
-    foreign key(email) references authors(email)
+    foreign key(endTime) references forestFires(endTime)
 );
 
 Create Table authors(
