@@ -17,3 +17,4 @@ Alter Table geogranges Add Constraint geogConstraint CHECK
     latMin < latMax And
     lonMin < lonMax
 );
+
