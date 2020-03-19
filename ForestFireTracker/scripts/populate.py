@@ -4,6 +4,9 @@ populate.py - generates believeable data and populates the database
 import random
 import datetime
 import time
+import math
+
+POP_DENSITY_CONSTANT = (math.pi/180)*(6731**2) # in squared kilometers
 
 def str_time_prop(start, end, fmt, prop):
     """Get a time at a proportion of a range of two formatted times.
@@ -33,6 +36,9 @@ def get_rand_date():
     actually get the random date lol
     """
     return random_date("1-1-2000 0:00:00", "1-1-2020 0:00:00", random.random())
+
+def calculate_pop_density():
+
 
 def populate_forests(regions):
     """
@@ -86,13 +92,15 @@ def populate_authors(reports):
     return authors
 
 def populate_animals():
-    """
-    """
+    """"
+    """"
     # TODO
 
 def populate_populations():
-    """
-    """
+    populations = []
+    for i in range(0, 9):
+
+
     # TODO
 
 def populate_population_samples():
