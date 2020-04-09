@@ -56,6 +56,7 @@ public class CliMenu {
             } else {
                 System.out.println("Invalid option!\n");
             }
+            System.out.println();
         }
     }
 }

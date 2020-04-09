@@ -2,15 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11917f56-b3e8-48ec-96f9-58dd0099bda1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/postgresql_42_2_12.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/CliMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ForestFireTracker.iml" beforeDir="false" afterPath="$PROJECT_DIR$/ForestFireTracker.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DatabaseApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DatabaseApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Controller.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/Main.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/sample/sample.fxml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +89,7 @@
       <workItem from="1582404342491" duration="698000" />
       <workItem from="1582571926701" duration="7195000" />
       <workItem from="1582729289569" duration="3871000" />
-      <workItem from="1586465966591" duration="2836000" />
+      <workItem from="1586465966591" duration="3483000" />
     </task>
     <servers />
   </component>
@@ -124,22 +117,22 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="666" y="266" key="FileChooserDialogImpl/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586466742736" />
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom" timestamp="1586468560455">
+    <state width="1877" height="112" key="GridCell.Tab.0.bottom" timestamp="1586469436694">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.bottom/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586468560455" />
-    <state width="1877" height="285" key="GridCell.Tab.0.center" timestamp="1586468560455">
+    <state width="1877" height="112" key="GridCell.Tab.0.bottom/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586469436694" />
+    <state width="1877" height="112" key="GridCell.Tab.0.center" timestamp="1586469436694">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.center/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586468560455" />
-    <state width="1877" height="285" key="GridCell.Tab.0.left" timestamp="1586468560455">
+    <state width="1877" height="112" key="GridCell.Tab.0.center/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586469436694" />
+    <state width="1877" height="112" key="GridCell.Tab.0.left" timestamp="1586469436694">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.left/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586468560455" />
-    <state width="1877" height="285" key="GridCell.Tab.0.right" timestamp="1586468560455">
+    <state width="1877" height="112" key="GridCell.Tab.0.left/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586469436694" />
+    <state width="1877" height="112" key="GridCell.Tab.0.right" timestamp="1586469436694">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="285" key="GridCell.Tab.0.right/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586468560455" />
+    <state width="1877" height="112" key="GridCell.Tab.0.right/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586469436694" />
     <state x="440" y="99" key="SettingsEditor" timestamp="1586466748027">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -148,5 +141,9 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="664" y="416" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586466616546" />
+    <state x="570" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1586469427122">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="570" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586469427122" />
   </component>
 </project>

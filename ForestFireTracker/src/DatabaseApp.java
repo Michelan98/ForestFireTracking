@@ -140,9 +140,13 @@ public class DatabaseApp {
         forest_mgmt.addOption("List forests", () -> {});
         forest_mgmt.addOption("List forests", () -> {});
 
+        var pop_mgmt = new CliMenu("Population Management Menu", CliMenu.menuType.SUB);
+        pop_mgmt.addOption("List Species", () -> {});
+        pop_mgmt.addOption("Add population sample", () -> {/* TODO: create a class to handle that with an argument parser */});
+
         var main_menu = new CliMenu("Main Menu", CliMenu.menuType.MAIN);
         main_menu.addOption("Manage Forests", forest_mgmt::execute);
-        main_menu.addOption("Manage Populations", () -> {});
+        main_menu.addOption("Manage Populations", pop_mgmt::execute);
         main_menu.addOption("Manage A thing", () -> {});
         main_menu.addOption("thing 1", () -> {});
         main_menu.addOption("thing 2", () -> {});
