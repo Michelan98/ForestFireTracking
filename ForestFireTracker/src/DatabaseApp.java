@@ -1,11 +1,8 @@
 import java.sql.*;
 import java.util.Scanner;
-import javax.swing.*;
 import java.sql.DriverManager;
 import java.sql.Connection;
 import java.sql.SQLException;
-
-
 
 public class DatabaseApp {
 
@@ -39,9 +36,7 @@ public class DatabaseApp {
         return connection;
     }
 
-    //Run everything in here
-    public static void main(String[] args) throws SQLException {
-
+    public static void thing() throws SQLException {
         Connection connection = connect();
         System.out.println();
 
@@ -136,6 +131,22 @@ public class DatabaseApp {
 
 
         System.out.println("STOP");
+    }
+
+    public static void main(String[] args) {
+        // TODO: parse args???
+        var forest_mgmt = new CliMenu("Forest Management Menu", CliMenu.menuType.SUB);
+        forest_mgmt.addOption("List forests", () -> {});
+        forest_mgmt.addOption("List forests", () -> {});
+        forest_mgmt.addOption("List forests", () -> {});
+
+        var main_menu = new CliMenu("Main Menu", CliMenu.menuType.MAIN);
+        main_menu.addOption("Manage Forests", forest_mgmt::execute);
+        main_menu.addOption("Manage Populations", () -> {});
+        main_menu.addOption("Manage A thing", () -> {});
+        main_menu.addOption("thing 1", () -> {});
+        main_menu.addOption("thing 2", () -> {});
+        main_menu.execute();
     }
 }
 
