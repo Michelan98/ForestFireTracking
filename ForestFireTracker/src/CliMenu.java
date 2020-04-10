@@ -1,4 +1,3 @@
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -60,11 +59,7 @@ public class CliMenu {
             System.out.println();
 
             if(options.get(option).getName() == "List forests"){
-                try {
-                    QueryManager.listForests();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
+                QueryManager.listForests();
             }
         }
     }

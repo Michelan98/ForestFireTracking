@@ -1,4 +1,3 @@
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
@@ -54,30 +53,44 @@ public class QueryManager {
         DBConnectionManager.disconnect();
     }
 
-    public static void listForests() throws SQLException {
+    public static void listForests() {
         DBConnectionManager.connect();
-        Connection con = DBConnectionManager.getConnection();
-        assert con != null;
-        String query = "SELECT fname FROM forests;";
-        DBConnectionManager.beginStatement();
-        PreparedStatement pst = DBConnectionManager.prepareStatement(query);
-        assert pst != null;
-        DBConnectionManager.executeUpdate(pst);
-        QueryResult result = DBConnectionManager.executeQuery(pst);
-        assert result != null;
-        var rs = result.resultSet;
-        var md = result.metaData;
-        int numColumns = md.getColumnCount();
-        while (rs.next()) {
-            for (int i = 1; i <= numColumns; i++) {
-                if (md.getColumnName(i) == "fname") {
-                    var resultColumn = rs.getArray(i);
-                    System.out.print(md.getColumnName(i) + ": " + resultColumn.toString());
+        var con = DBConnectionManager.getConnection();
+        var stmt = DBConnectionManager.getStatement();
+        try{
+            DBConnectionManager.beginStatement();
+            String query = "SELECT fname FROM forests";
+            PreparedStatement pst = DBConnectionManager.prepareStatement(query);
+            assert pst != null;
+            DBConnectionManager.endStatement();
+            DBConnectionManager.executeUpdate(pst);
+            QueryResult result = DBConnectionManager.executeQuery(pst);
+            assert result != null;
+            var rs = result.resultSet;
+            var md = result.metaData;
+            int numColumns = md.getColumnCount();
+            while (rs.next()) {
+                for (int i = 1; i <= numColumns; i++) {
+                    if (md.getColumnName(i) == "fname") {
+                        var resultColumn = rs.getArray(i);
+                        System.out.print(md.getColumnName(i) + ": " + resultColumn.toString());
+                    }
                 }
+                System.out.println("");
             }
-            System.out.println("");
+        }catch(SQLException se) {
+            int count = 1;
+            while (se != null) {
+                System.out.println("SQLException " + count);
+                System.out.println("Code: " + se.getErrorCode());
+                System.out.println("SqlState: " + se.getSQLState());
+                System.out.println("Error Message: " + se.getMessage());
+                se = se.getNextException();
+                count++;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        DBConnectionManager.endStatement();
         DBConnectionManager.disconnect();
     }
 }
