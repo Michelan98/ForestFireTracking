@@ -17,7 +17,7 @@ public class CliMenu {
         }
 
         public String getName() { return this.name; }
-        public void call() {func.run();}
+        public void call() { func.run(); }
     }
 
     private final ArrayList<MenuEntry> options;
