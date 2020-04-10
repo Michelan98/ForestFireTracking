@@ -1,3 +1,5 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 public class QueryManager {
@@ -49,6 +51,33 @@ public class QueryManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        DBConnectionManager.disconnect();
+    }
+
+    public static void listForests() throws SQLException {
+        DBConnectionManager.connect();
+        Connection con = DBConnectionManager.getConnection();
+        assert con != null;
+        String query = "SELECT fname FROM forests;";
+        DBConnectionManager.beginStatement();
+        PreparedStatement pst = DBConnectionManager.prepareStatement(query);
+        assert pst != null;
+        DBConnectionManager.executeUpdate(pst);
+        QueryResult result = DBConnectionManager.executeQuery(pst);
+        assert result != null;
+        var rs = result.resultSet;
+        var md = result.metaData;
+        int numColumns = md.getColumnCount();
+        while (rs.next()) {
+            for (int i = 1; i <= numColumns; i++) {
+                if (md.getColumnName(i) == "fname") {
+                    var resultColumn = rs.getArray(i);
+                    System.out.print(md.getColumnName(i) + ": " + resultColumn.toString());
+                }
+            }
+            System.out.println("");
+        }
+        DBConnectionManager.endStatement();
         DBConnectionManager.disconnect();
     }
 }

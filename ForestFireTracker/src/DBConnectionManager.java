@@ -32,7 +32,7 @@ public class DBConnectionManager {
 
         // Need to register JDBC postgresql driver
         try {
-            DriverManager.registerDriver ( new org.postgresql.Driver() ) ;
+            //DriverManager.registerDriver ( new org.postgresql.Driver() ) ;
         } catch (Exception cnfe){
             System.err.println(cnfe.getMessage());
             return false;
