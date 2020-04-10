@@ -63,6 +63,7 @@ public class DBConnectionManager {
 
     public static void beginStatement() {
         try {
+            assert connection != null && connection.isValid(100);
             stmt = connection.createStatement();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -119,4 +120,18 @@ public class DBConnectionManager {
 
     }
 
+    public static QueryResult executeStatement(String sql) {
+        assert stmt != null;
+        ResultSet resultSet = null;
+        ResultSetMetaData metaData = null;
+        try {
+            stmt.execute(sql);
+            resultSet = stmt.getResultSet();
+            metaData = resultSet.getMetaData();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+            return null;
+        }
+        return new QueryResult(resultSet, metaData);
+    }
 }

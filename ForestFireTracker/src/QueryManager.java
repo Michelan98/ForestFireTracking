@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class QueryManager {
     /*
@@ -50,5 +51,33 @@ public class QueryManager {
             e.printStackTrace();
         }
         DBConnectionManager.disconnect();
+    }
+
+    /**
+     * Returns the list of forest names from the DB
+     * @return ArrayList of strings containing the names
+     */
+    public static ArrayList<String> getForestNamesFromDB() {
+        var ret = new ArrayList<String>();
+        var sql = "Select fname From Forests";
+        if (!DBConnectionManager.connect()) return null;
+        DBConnectionManager.beginStatement();
+        try {
+            var res = DBConnectionManager.executeStatement(sql);
+            if (res != null) {
+                assert res.metaData.getColumnCount() == 1;
+                while (res.resultSet.next()) {
+                    ret.add(res.resultSet.getString(1));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
+        }
+        DBConnectionManager.endStatement();
+        DBConnectionManager.disconnect();
+        return ret;
     }
 }

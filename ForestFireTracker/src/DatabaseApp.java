@@ -8,7 +8,18 @@ public class DatabaseApp {
     public static void main(String[] args) {
         // TODO: parse args???
         var forest_mgmt = new CliMenu("Forest Management Menu", CliMenu.menuType.SUB);
-        forest_mgmt.addOption("List forests", () -> {/*TODO*/});
+        forest_mgmt.addOption("List forests", () -> {
+            var forests = QueryManager.getForestNamesFromDB();
+            if (forests != null) {
+                System.out.println();
+                for (var f : forests) {
+                    System.out.println(f);
+                }
+                System.out.println();
+            } else {
+                System.err.format("Unable to retrieve forest names.\n\n");
+            }
+        });
         forest_mgmt.addOption("Get surface area of a forest", () -> {/*TODO*/});
         forest_mgmt.addOption("List ongoing forest fires", () -> {/*TODO*/});
 
