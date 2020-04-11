@@ -15,16 +15,20 @@ public class QueryManager {
      */
 
     public static String format(ResultSet results, String col1, String col2, int column1, int column2){
-        int i, width = 0;
-        int row_count = 0;
         StringBuffer buffer = new StringBuffer();
-        StringBuffer bar = new StringBuffer( );
-        StringBuffer filler = new StringBuffer();
         try {
+            int i, width = 0;
+            int row_count = 0;
+            StringBuffer bar = new StringBuffer( );
             int size1 = results.getMetaData().getColumnDisplaySize(column1);
             int size2 = results.getMetaData().getColumnDisplaySize(column2);
             width += size1 + size2;
-            width += 3;
+            if(col2 == ""){
+                width += 1;
+            }else{
+                width += 2;
+            }
+
             for(i=0; i<width; i++) {
                 bar.append('-');
             }
@@ -32,7 +36,6 @@ public class QueryManager {
             buffer.append(bar.toString( ) + "|");
             String label1 = results.getMetaData().getColumnLabel(1);
             String label2 = results.getMetaData().getColumnLabel(2);
-            int x;
 
             if( label1.length( ) > size1 ) {
                 label1 = label1.substring(0, size1);
@@ -43,7 +46,8 @@ public class QueryManager {
             // If the label is shorter than the column,
             // pad it with spaces
             if( label1.length( ) < size1 ) {
-                int j;
+                StringBuffer filler = new StringBuffer();
+                int j, x;
                 x = (size1-label1.length( ))/2;
                 for(j=0; j<x; j++) {
                     filler.append(' ');
@@ -61,40 +65,45 @@ public class QueryManager {
             // Add the column header to the buffer
             buffer.append(label1 + "|");
 
-            if( label2.length( ) < size2 ) {
-                int j;
-                x = (size2-label2.length( ))/2;
-                for(j=0; j<x; j++) {
-                    filler.append(' ');
-                }
-                label2 = filler + label2 + filler;
-                if(label2.length( ) > size2 ) {
-                    label2 = label2.substring(0, size2);
-                }
-                else {
-                    while( label2.length( ) < size2 ) {
-                        label2 += " ";
-                    }
-                }
-            }
-            // Add the column header to the buffer
-            buffer.append(label2 + "|");
-            buffer.append("\n" + bar.toString( ));
-            // Format each row in the result set and add it on
-            while( results.next( ) ) {
-                row_count++;
-                buffer.append('|');
-                filler.replace(0, filler.length() - 1, " ");
-                // Format each column of the row
-                if( col1.length( ) > size1 ) {
-                    col1 = col1.substring(0, size1);
-                }else{
-                    int j;
-                    x = (size1-col1.length( ))/2;
+            if (col2 != ""){
+                StringBuffer filler = new StringBuffer();
+                if( label2.length( ) < size2 ) {
+                    int j, x;
+                    x = (size2-label2.length( ))/2;
                     for(j=0; j<x; j++) {
                         filler.append(' ');
                     }
-                    col1 = filler + col1 + filler;
+                    label2 = filler + label2 + filler;
+                    if(label2.length( ) > size2 ) {
+                        label2 = label2.substring(0, size2);
+                    }
+                    else {
+                        while( label2.length( ) < size2 ) {
+                            label2 += " ";
+                        }
+                    }
+                }
+                // Add the column header to the buffer
+                buffer.append(label2 + "|");
+                buffer.append("\n" + bar.toString( ));
+            }else{ }
+
+            // Format each row in the result set and add it on
+            while(results.next()) {
+                StringBuffer rowFiller = new StringBuffer();
+                //results.getMetaData().co(column1);
+                row_count++;
+                buffer.append('|');
+                // Format each column of the row
+                if( col1.length() > size1 ) {
+                    col1 = col1.substring(0, size1);
+                }else{
+                    int j, x;
+                    x = (size1-col1.length( ))/2;
+                    for(j=0; j<x; j++) {
+                        rowFiller.append(' ');
+                    }
+                    col1 = rowFiller + col1 + rowFiller;
                     if( col1.length( ) > size1 ) {
                         col1 = col1.substring(0, size1);
                     }
@@ -106,27 +115,30 @@ public class QueryManager {
                 }
                 buffer.append(col1 + "|");
 
-                if( col2.length( ) > size2 ) {
-                    col2 = col2.substring(0, size2);
-                }else{
-                    int j;
-
-                    x = (size2-col2.length( ))/2;
-                    for(j=0; j<x; j++) {
-                        filler.append(' ');
-                    }
-                    col2 = filler + col2 + filler;
+                if (col2 != ""){
                     if( col2.length( ) > size2 ) {
                         col2 = col2.substring(0, size2);
-                    }
-                    else {
-                        while( col2.length( ) < size2) {
-                            col2 += " ";
+                    }else{
+                        int j, x;
+
+                        x = (size2-col2.length( ))/2;
+                        for(j=0; j<x; j++) {
+                            rowFiller.append(' ');
+                        }
+                        col2 = rowFiller + col2 + rowFiller;
+                        if( col2.length( ) > size2 ) {
+                            col2 = col2.substring(0, size2);
+                        }
+                        else {
+                            while( col2.length( ) < size2) {
+                                col2 += " ";
+                            }
                         }
                     }
-                }
-                buffer.append(col2 + "|");
-                buffer.append("\n");
+                    buffer.append(col2 + "|");
+                    buffer.append("\n");
+                }else{ }
+
             }
             // Stick a row count up at the top
             if( row_count == 0 ) {
