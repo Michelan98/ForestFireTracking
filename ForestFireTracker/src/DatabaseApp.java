@@ -59,25 +59,26 @@ public class DatabaseApp {
         }
         species = input;
         // Both valid forest and species entered, validate that a population exists
-        var foo = QueryManager.getPopulationFromDB(forest, species);
-        if (foo == null) return; // important distinction between null and empty
-        if (foo.isEmpty()) {
+        var pop = QueryManager.getPopulationFromDB(forest, species);
+        // sanity check, there should be only one population per forest/species pair
+        if (pop == null || pop.isEmpty() || !pop.contains(species) || !pop.contains(forest)) {
             System.err.format("""
-                            There is no population of %s in %s.
-                            Add a new population and then start collecting samples
+                            There is no population of %s in %s
+                            Or the connection could not be established.
+                            Add a new population and then start collecting samples.
                             """, species, forest);
             return;
         }
 
         var headCount = 0;
-        var sampleTime = LocalDateTime.now(); // TODO
+        var sampleTime = LocalDateTime.now();
         var sampleId = UUID.randomUUID();
         var tempCount = -1;
         while (tempCount < 0) {
             System.out.print("Enter headcount > ");
             tempCount = scanner.nextInt();
             if (tempCount < 0) {
-                System.err.println("Please enter a non-negative value (or 0).");
+                System.out.println("Please enter a non-negative value (or 0).");
             }
         }
         headCount = tempCount;

@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="11917f56-b3e8-48ec-96f9-58dd0099bda1" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/sql/trimStrings.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/CliMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/CliMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DatabaseApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DatabaseApp.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/QueryManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/QueryManager.java" afterDir="false" />
     </list>
@@ -94,7 +92,7 @@
       <workItem from="1582729289569" duration="3871000" />
       <workItem from="1586465966591" duration="8020000" />
       <workItem from="1586559078515" duration="2739000" />
-      <workItem from="1586623404768" duration="4652000" />
+      <workItem from="1586623404768" duration="6173000" />
     </task>
     <servers />
   </component>
@@ -122,38 +120,38 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="666" y="266" key="FileChooserDialogImpl/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586466742736" />
-    <state width="1877" height="344" key="GridCell.Tab.0.bottom" timestamp="1586627806712">
+    <state width="1877" height="344" key="GridCell.Tab.0.bottom" timestamp="1586629264686">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.bottom/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627806712" />
-    <state width="1877" height="344" key="GridCell.Tab.0.center" timestamp="1586627806712">
+    <state width="1877" height="344" key="GridCell.Tab.0.bottom/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264686" />
+    <state width="1877" height="344" key="GridCell.Tab.0.center" timestamp="1586629264686">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.center/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627806712" />
-    <state width="1877" height="344" key="GridCell.Tab.0.left" timestamp="1586627806712">
+    <state width="1877" height="344" key="GridCell.Tab.0.center/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264686" />
+    <state width="1877" height="344" key="GridCell.Tab.0.left" timestamp="1586629264686">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.left/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627806712" />
-    <state width="1877" height="344" key="GridCell.Tab.0.right" timestamp="1586627806712">
+    <state width="1877" height="344" key="GridCell.Tab.0.left/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264686" />
+    <state width="1877" height="344" key="GridCell.Tab.0.right" timestamp="1586629264686">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.0.right/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627806712" />
-    <state width="1877" height="344" key="GridCell.Tab.1.bottom" timestamp="1586627736567">
+    <state width="1877" height="344" key="GridCell.Tab.0.right/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264686" />
+    <state width="1877" height="344" key="GridCell.Tab.1.bottom" timestamp="1586629264687">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.1.bottom/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627736567" />
-    <state width="1877" height="344" key="GridCell.Tab.1.center" timestamp="1586627736567">
+    <state width="1877" height="344" key="GridCell.Tab.1.bottom/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264687" />
+    <state width="1877" height="344" key="GridCell.Tab.1.center" timestamp="1586629264686">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.1.center/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627736567" />
-    <state width="1877" height="344" key="GridCell.Tab.1.left" timestamp="1586627736567">
+    <state width="1877" height="344" key="GridCell.Tab.1.center/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264686" />
+    <state width="1877" height="344" key="GridCell.Tab.1.left" timestamp="1586629264686">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.1.left/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627736567" />
-    <state width="1877" height="344" key="GridCell.Tab.1.right" timestamp="1586627736567">
+    <state width="1877" height="344" key="GridCell.Tab.1.left/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264686" />
+    <state width="1877" height="344" key="GridCell.Tab.1.right" timestamp="1586629264686">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state width="1877" height="344" key="GridCell.Tab.1.right/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586627736567" />
+    <state width="1877" height="344" key="GridCell.Tab.1.right/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586629264686" />
     <state x="741" y="139" key="SettingsEditor" timestamp="1586562519262">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
@@ -162,10 +160,10 @@
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
     <state x="664" y="416" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586466616546" />
-    <state x="570" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1586469427122">
+    <state x="570" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1586628102079">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="570" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586469427122" />
+    <state x="570" y="214" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/-1920.0.1920.1050/0.0.1920.1050@0.0.1920.1050" timestamp="1586628102079" />
     <state x="-1356" y="0" width="1372" height="1032" key="dock-window-1" timestamp="1586625032415">
       <screen x="-1920" y="0" width="1920" height="1050" />
     </state>
@@ -180,23 +178,28 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/DatabaseApp.java</url>
-          <line>93</line>
+          <line>94</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/QueryManager.java</url>
-          <line>157</line>
+          <line>158</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/DatabaseApp.java</url>
-          <line>52</line>
-          <option name="timeStamp" value="4" />
+          <url>file://$PROJECT_DIR$/src/QueryManager.java</url>
+          <line>165</line>
+          <option name="timeStamp" value="6" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/DatabaseApp.java</url>
-          <line>62</line>
-          <option name="timeStamp" value="5" />
+          <line>84</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/QueryManager.java</url>
+          <line>182</line>
+          <option name="timeStamp" value="8" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

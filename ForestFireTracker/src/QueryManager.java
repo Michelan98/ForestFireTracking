@@ -1,5 +1,6 @@
 import java.sql.Array;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -89,7 +90,7 @@ public class QueryManager {
      * @return ArrayList of strings containing both species and common name
      */
     public static ArrayList<String> getSpeciesNamesFromDB() {
-        System.out.println("Querying...");
+        //System.out.println("Querying...");
         var ret = new ArrayList<String>();
         var sql = "Select species From Animals";
         if (!DBConnectionManager.connect()) return null;
@@ -106,7 +107,7 @@ public class QueryManager {
                     var toAdd = speciesName.trim();
                     ret.add(toAdd);
                 }
-                System.out.println("Finished!");
+                //System.out.println("Finished!");
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -124,7 +125,7 @@ public class QueryManager {
      * @return ArrayList of strings containing both species name of endangered
      */
     public static ArrayList<String> getEndangeredSpeciesFromDB() {
-        System.out.println("Querying...");
+        //System.out.println("Querying...");
         var ret = new ArrayList<String>();
         var sql = "Select species From populations Where endangered = TRUE";
         if (!DBConnectionManager.connect()) return null;
@@ -140,7 +141,7 @@ public class QueryManager {
                     speciesName = String.format("%25s", speciesName);
                     ret.add(speciesName.trim());
                 }
-                System.out.println("Finished!");
+                //System.out.println("Finished!");
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -174,12 +175,27 @@ public class QueryManager {
             throwables.printStackTrace();
         }
         DBConnectionManager.disconnect();
-        return null;
+        return ret;
     }
 
     public static boolean addPopulationSampleToDB(
-            UUID species, LocalDateTime fname, double density, String headcount, String endangered) {
+            UUID sampleId, LocalDateTime samplingTime, int headcount, String species, String fname) {
+        if (!DBConnectionManager.connect()) return false;
 
-        return false;
+        var sql = "Insert into populationsamples values (?, ?, ?, ?, ?)";
+        var stmt = DBConnectionManager.prepareStatement(sql);
+        try {
+            stmt.setObject(1, sampleId);
+            stmt.setTimestamp(2, Timestamp.valueOf(samplingTime));
+            stmt.setInt(3, headcount);
+            stmt.setString(4, species);
+            stmt.setString(5, fname);
+            DBConnectionManager.executeUpdate(stmt);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        DBConnectionManager.disconnect();
+        return true;
     }
 }
