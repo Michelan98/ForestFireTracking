@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 public class QueryManager {
-    private static Entry<String, Float> forestAndSurface;
     /*
         TODO: write all queries in here (processing can be done elsewhere but let's keep the queries in one place
 
@@ -231,7 +230,7 @@ public class QueryManager {
         return ret;
     }
 
-    public static ArrayList<String> getForestSurfaceAreas(){
+    public static ArrayList<String> getForestSurfaceAreas() {
         var queryResult = new ArrayList<String>();
         String query = "SELECT fname, fsurfaceArea FROM forests";
         if (!DBConnectionManager.connect()) return null;
@@ -244,20 +243,21 @@ public class QueryManager {
                     var fNames = res.resultSet.getString(1);
                     var surfaceAreas = res.resultSet.getFloat(2);
                     var surfaceAreasString = Float.toString(surfaceAreas);
-                    var entry = format(res.resultSet, fNames, surfaceAreasString, 1,2);
+                    var entry = format(res.resultSet, fNames, surfaceAreasString, 1, 2);
                     queryResult.add(entry);
                 }
             }
-        }catch (Exception e) {
-                System.err.println(e.getMessage());
-                DBConnectionManager.endStatement();
-                DBConnectionManager.disconnect();
-                return null;
-            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
+        }
 
         DBConnectionManager.endStatement();
         DBConnectionManager.disconnect();
         return queryResult;
+    }
     /**
      * Returns the list of species names and common names of animals from the DB
      * @return ArrayList of strings containing both species and common name
@@ -352,23 +352,23 @@ public class QueryManager {
     }
 
     public static boolean addPopulationSampleToDB(
-            UUID sampleId, LocalDateTime samplingTime, int headcount, String species, String fname) {
-        if (!DBConnectionManager.connect()) return false;
+            UUID sampleId, LocalDateTime samplingTime, int headcount, String species, String fname){
+            if (!DBConnectionManager.connect()) return false;
 
-        var sql = "Insert into populationsamples values (?, ?, ?, ?, ?)";
-        var stmt = DBConnectionManager.prepareStatement(sql);
-        try {
-            stmt.setObject(1, sampleId);
-            stmt.setTimestamp(2, Timestamp.valueOf(samplingTime));
-            stmt.setInt(3, headcount);
-            stmt.setString(4, species);
-            stmt.setString(5, fname);
-            DBConnectionManager.executeUpdate(stmt);
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            return false;
-        }
-        DBConnectionManager.disconnect();
-        return true;
+            var sql = "Insert into populationsamples values (?, ?, ?, ?, ?)";
+            var stmt = DBConnectionManager.prepareStatement(sql);
+            try {
+                stmt.setObject(1, sampleId);
+                stmt.setTimestamp(2, Timestamp.valueOf(samplingTime));
+                stmt.setInt(3, headcount);
+                stmt.setString(4, species);
+                stmt.setString(5, fname);
+                DBConnectionManager.executeUpdate(stmt);
+            } catch (Exception e) {
+                System.err.println(e.getMessage());
+                return false;
+            }
+            DBConnectionManager.disconnect();
+            return true;
     }
 }
