@@ -13,14 +13,6 @@ public class DatabaseApp {
     static ArrayList<String> species_cache = null;
 
     public static void addPopSample() {
-        /*
-        TODO:
-            - sampleId: random UUID
-            - samplingTime: timestamp
-            - sampleHeadcount: int
-            - forest: make sure forest exists
-            - species: make sure theres a population in chosen forest, if not, add pop
-         */
         // Get the forests and species and use for entering samples
         if (forests_cache == null) {
             forests_cache = QueryManager.getForestNamesFromDB();
