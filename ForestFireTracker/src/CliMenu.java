@@ -23,27 +23,32 @@ public class CliMenu {
     private final ArrayList<MenuEntry> options;
     private final String menuName;
     private final menuType type;
+    private boolean loop;
 
     public CliMenu(String menuName, menuType type) {
         this.options = new ArrayList<>();
         this.menuName = menuName;
         this.type = type;
+        this.loop = true;
     }
 
     public void addOption(String name, Runnable func) {
         this.options.add(new MenuEntry(name, func));
     }
 
-    public void execute() {
-        var loop = new AtomicBoolean(true);
-        Scanner scanner = new Scanner(System.in);
-        // Add Exit options at the end if main menu, add "go back" if sub
+    public void addExit() {
         options.add(switch (type) {
             case MAIN -> new MenuEntry("Exit", () -> System.exit(0));
-            case SUB -> new MenuEntry("Back", () -> loop.set(false));
+            case SUB -> new MenuEntry("Back", () -> this.loop = false);
         });
+    }
+
+    public void execute() {
+        this.loop = true;
+        var scanner = new Scanner(System.in);
+        // Add Exit options at the end if main menu, add "go back" if sub
         // Loop as long as you wish
-        while (loop.get()) {
+        while (this.loop) {
             var i = 0;
             System.out.format("\t%s\n", this.menuName);
             for (var opt : this.options) {
