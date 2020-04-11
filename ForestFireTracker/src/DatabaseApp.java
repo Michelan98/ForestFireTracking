@@ -1,9 +1,3 @@
-import java.sql.*;
-import java.util.Scanner;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
-
 public class DatabaseApp {
     public static void main(String[] args) {
         // TODO: parse args???
@@ -20,7 +14,19 @@ public class DatabaseApp {
                 System.err.format("Unable to retrieve forest names.\n\n");
             }
         });
-        forest_mgmt.addOption("Get surface area of a forest", () -> {/*TODO*/});
+        forest_mgmt.addOption("Get surface area of a forest", ()-> {
+            var forestSurfaceAreas = QueryManager.getForestSurfaceAreas();
+
+            if (forestSurfaceAreas != null) {
+                System.out.println();
+                for (var f : forestSurfaceAreas) {
+                    System.out.println(f);
+                }
+                System.out.println();
+            } else {
+                System.err.format("Unable to retrieve forest names.\n\n");
+            }
+        });
         forest_mgmt.addOption("List ongoing forest fires", () -> {/*TODO*/});
 
         var pop_mgmt = new CliMenu("Population Management Menu", CliMenu.menuType.SUB);
