@@ -15,6 +15,9 @@ public class QueryManager {
             - Disconnect from the DB: DBConnectionManager.disconnect()
      */
 
+    // Use to format functions by entering resultset, values for col 1 and 2 in String from resultSet.GetVar() fn
+    // and the indices of the columns.
+    // If you only want to format a SINGLE column, set "col2" to "" and "column2" to "0"
     public static String format(ResultSet results, String col1, String col2, int column1, int column2){
         StringBuffer buffer = new StringBuffer();
         try {
@@ -22,8 +25,11 @@ public class QueryManager {
             int row_count = 0;
             StringBuffer bar = new StringBuffer( );
             int size1 = results.getMetaData().getColumnDisplaySize(column1);
-            int size2 = results.getMetaData().getColumnDisplaySize(column2);
-            width += size1 + size2;
+            int size2 = 0;
+            if(col2 != "" && column2 > 0) {
+                size2 = results.getMetaData().getColumnDisplaySize(column2);
+                width += size1 + size2;
+            }
             if(col2 == ""){
                 width += 1;
             }else{
@@ -91,52 +97,66 @@ public class QueryManager {
 
             // Format each row in the result set and add it on
             while(results.next()) {
-                StringBuffer rowFiller = new StringBuffer();
-                //results.getMetaData().co(column1);
                 row_count++;
+                Object value1 = results.getObject(column1);
+                Object value2 = results.getObject(column2);
+                StringBuffer rowFiller1 = new StringBuffer();
+                StringBuffer rowFiller2 = new StringBuffer();
                 buffer.append('|');
+                String str1;
+                String str2;
+                if( results.wasNull( ) ) {
+                    str1 = "NULL";
+                    str2 = "NULL";
+                }
+                else {
+                    str1 = value1.toString( );
+                    str2 = value2.toString();
+                    str1 = str1.replaceAll("\n", "");
+                    str2 = str2.replaceAll("\n", "");
+                }
                 // Format each column of the row
-                if( col1.length() > size1 ) {
-                    col1 = col1.substring(0, size1);
+                if( str1.length() > size1 ) {
+                    str1 = str1.substring(0, size1);
                 }else{
                     int j, x;
-                    x = (size1-col1.length( ))/2;
+                    x = (size1-str1.length( ))/2;
                     for(j=0; j<x; j++) {
-                        rowFiller.append(' ');
+                        rowFiller1.append(' ');
                     }
-                    col1 = rowFiller + col1 + rowFiller;
-                    if( col1.length( ) > size1 ) {
-                        col1 = col1.substring(0, size1);
+                    str1 = rowFiller1 + str1 + rowFiller1;
+                    if( str1.length( ) > size1 ) {
+                        str1 = str1.substring(0, size1);
                     }
                     else {
-                        while( col1.length( ) < size1 ) {
-                            col1 += " ";
+                        while( str1.length( ) < size1 ) {
+                            str1 += " ";
                         }
                     }
                 }
-                buffer.append(col1 + "|");
+                buffer.append(str1 + "|");
 
                 if (col2 != ""){
-                    if( col2.length( ) > size2 ) {
-                        col2 = col2.substring(0, size2);
+                    if( str2.length( ) > size2 ) {
+                        str2 = str2.substring(0, size2);
                     }else{
                         int j, x;
-
-                        x = (size2-col2.length( ))/2;
+                        x = (size2-str2.length( ))/2;
                         for(j=0; j<x; j++) {
-                            rowFiller.append(' ');
+                            rowFiller2.append(' ');
                         }
-                        col2 = rowFiller + col2 + rowFiller;
-                        if( col2.length( ) > size2 ) {
-                            col2 = col2.substring(0, size2);
+                        str2 = rowFiller2 + str2 + rowFiller2;
+                        if( str2.length( ) > size2 ) {
+                            str2 = str2.substring(0, size2);
                         }
                         else {
-                            while( col2.length( ) < size2) {
-                                col2 += " ";
+                            while( str2.length( ) < size2) {
+                                str2 += " ";
                             }
                         }
                     }
-                    buffer.append(col2 + "|");
+                    str2.replace("\n", "");
+                    buffer.append(str2 + "|");
                     buffer.append("\n");
                 }else{ }
 
@@ -160,6 +180,8 @@ public class QueryManager {
         }
         return buffer.toString();
     }
+
+
     public static void thing() {
         // Kind of an example
         DBConnectionManager.connect();
