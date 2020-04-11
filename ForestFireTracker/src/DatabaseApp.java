@@ -24,8 +24,30 @@ public class DatabaseApp {
         forest_mgmt.addOption("List ongoing forest fires", () -> {/*TODO*/});
 
         var pop_mgmt = new CliMenu("Population Management Menu", CliMenu.menuType.SUB);
-        pop_mgmt.addOption("List all species", () -> {/*TODO*/});
-        pop_mgmt.addOption("List endangered species", () -> {/*TODO*/});
+        pop_mgmt.addOption("List all species", () -> {
+            var species = QueryManager.getSpeciesNamesFromDB();
+            if (species != null) {
+                System.out.println();
+                for (var s : species) {
+                    System.out.println(s);
+                }
+                System.out.println();
+            } else {
+                System.err.format("Unable to retrieve species.\n\n");
+            }
+        });
+        pop_mgmt.addOption("List endangered species", () -> {
+            var species = QueryManager.getEndangeredSpeciesFromDB();
+            if (species != null) {
+                System.out.println();
+                for (var s : species) {
+                    System.out.println(s);
+                }
+                System.out.println();
+            } else {
+                System.err.format("Unable to retrieve species.\n\n");
+            }
+        });
         pop_mgmt.addOption("Add population sample", () -> {/* TODO: create a class to handle that with an argument parser */});
 
         var fire_mgmt = new CliMenu("Forest Fire Management Menu", CliMenu.menuType.SUB);
