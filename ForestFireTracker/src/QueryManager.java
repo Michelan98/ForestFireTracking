@@ -1,7 +1,9 @@
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Map.Entry;
+import java.util.UUID;
 
 public class QueryManager {
     private static Entry<String, Float> forestAndSurface;
@@ -215,7 +217,7 @@ public class QueryManager {
             if (res != null) {
                 assert res.metaData.getColumnCount() == 1;
                 while (res.resultSet.next()) {
-                    ret.add(res.resultSet.getString(1));
+                    ret.add(res.resultSet.getString(1).trim());
                 }
             }
         } catch (Exception e) {
@@ -261,9 +263,9 @@ public class QueryManager {
      * @return ArrayList of strings containing both species and common name
      */
     public static ArrayList<String> getSpeciesNamesFromDB() {
-        System.out.println("Querying...");
+        //System.out.println("Querying...");
         var ret = new ArrayList<String>();
-        var sql = "Select species,commonname From Animals";
+        var sql = "Select species From Animals";
         if (!DBConnectionManager.connect()) return null;
         DBConnectionManager.beginStatement();
         try {
@@ -274,13 +276,11 @@ public class QueryManager {
                     var speciesName = res.resultSet.getString(1);
                     // FIX LATER
                     if (speciesName.equals("Endangered")) continue;
-                    var commonName = res.resultSet.getString(2);
                     speciesName = String.format("%25s", speciesName);
-                    commonName = String.format("%30s", commonName);
-                    var toAdd = speciesName + " " + commonName;
+                    var toAdd = speciesName.trim();
                     ret.add(toAdd);
                 }
-                System.out.println("Finished!");
+                //System.out.println("Finished!");
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -298,7 +298,7 @@ public class QueryManager {
      * @return ArrayList of strings containing both species name of endangered
      */
     public static ArrayList<String> getEndangeredSpeciesFromDB() {
-        System.out.println("Querying...");
+        //System.out.println("Querying...");
         var ret = new ArrayList<String>();
         var sql = "Select species From populations Where endangered = TRUE";
         if (!DBConnectionManager.connect()) return null;
@@ -312,9 +312,9 @@ public class QueryManager {
                     // FIX LATER
                     if (speciesName.equals("Endangered")) continue;
                     speciesName = String.format("%25s", speciesName);
-                    ret.add(speciesName);
+                    ret.add(speciesName.trim());
                 }
-                System.out.println("Finished!");
+                //System.out.println("Finished!");
             }
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -327,8 +327,48 @@ public class QueryManager {
         return ret;
     }
 
-    public static void addPopulationSampleToDB(
-            String species, String fname, double density, int headcount, boolean endangered) {
+    // TODO: validate return type
+    public static ArrayList<String> getPopulationFromDB(String forest, String species) {
+        if (!DBConnectionManager.connect()) return null;
+        var ret = new ArrayList<String>();
+        var sql = "Select * From Populations Where species=? And fname=?";
+        var stmt = DBConnectionManager.prepareStatement(sql);
+        if (stmt != null) try {
+            stmt.setString(1, species);
+            stmt.setString(2, forest);
+            var result = DBConnectionManager.executeQuery(stmt);
+            if (result == null) return null;
+            var cols = result.metaData.getColumnCount();
+            while (result.resultSet.next()) {
+                for (var i = 1; i <= cols; ++i) {
+                    ret.add(result.resultSet.getString(i));
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        DBConnectionManager.disconnect();
+        return ret;
+    }
 
+    public static boolean addPopulationSampleToDB(
+            UUID sampleId, LocalDateTime samplingTime, int headcount, String species, String fname) {
+        if (!DBConnectionManager.connect()) return false;
+
+        var sql = "Insert into populationsamples values (?, ?, ?, ?, ?)";
+        var stmt = DBConnectionManager.prepareStatement(sql);
+        try {
+            stmt.setObject(1, sampleId);
+            stmt.setTimestamp(2, Timestamp.valueOf(samplingTime));
+            stmt.setInt(3, headcount);
+            stmt.setString(4, species);
+            stmt.setString(5, fname);
+            DBConnectionManager.executeUpdate(stmt);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            return false;
+        }
+        DBConnectionManager.disconnect();
+        return true;
     }
 }
