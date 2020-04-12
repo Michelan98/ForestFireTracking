@@ -1,0 +1,11 @@
+species,fname,headcount,endangered,totalheadcount,behavior
+Sciurus vulgaris,Pike national forest,3000,f,490000,1
+Dendroctonus ponderosae,Siberian forests (all),3000000,f,570000000,1
+Rhinella marina,Amazon rain forest,10000000,f,198000000,0
+Python bivittatus,Amazon rain forest,5000,f,58800,0
+Myuchelys purvisi,Amazon rain forest,200,t,750,1
+Ramphastos toco,Congo basin rain forest,400,f,12600,1
+Dasyornis brachypterus,Cleveland national forest,300,t,2500,1
+Endangered,Pacotuba,30,f,30,1
+Vulpes vulpes,Cleveland national forest,6500,t,1110000,0
+Canis lupus,Amazon rain forest,10000,t,54000,0
