@@ -1,11 +1,6 @@
-import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Scanner;
-import java.sql.DriverManager;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.UUID;
 
 public class DatabaseApp {
@@ -98,7 +93,6 @@ public class DatabaseApp {
         });
         forest_mgmt.addOption("Get surface area of a forest", ()-> {
             var forestSurfaceAreas = QueryManager.getForestSurfaceAreas();
-
             if (forestSurfaceAreas != null) {
                 System.out.println();
                 for (var f : forestSurfaceAreas) {
@@ -109,7 +103,20 @@ public class DatabaseApp {
                 System.err.format("Unable to retrieve forest names.\n\n");
             }
         });
-        forest_mgmt.addOption("List ongoing forest fires", () -> {/*TODO*/});
+        forest_mgmt.addOption("List forest that had forest fires in the last 30 days", () -> {
+            var forestNames30Days = QueryManager.getForestNameWithForestFires30Days();
+            System.out.println(forestNames30Days);
+
+            if (forestNames30Days != null) {
+                System.out.println();
+                for (var f : forestNames30Days) {
+                    System.out.println(f);
+                }
+                System.out.println();
+            } else {
+                System.err.format("Unable to retrieve forest names.\n\n");
+            }
+        });
         forest_mgmt.addExit();
 
         var pop_mgmt = new CliMenu("Population Management Menu", CliMenu.menuType.SUB);

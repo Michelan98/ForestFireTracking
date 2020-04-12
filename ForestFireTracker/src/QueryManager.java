@@ -23,6 +23,7 @@ public class QueryManager {
         try {
             int i, width = 0;
             int row_count = 0;
+            String label2 = "";
             StringBuffer bar = new StringBuffer( );
             int size1 = results.getMetaData().getColumnDisplaySize(column1);
             int size2 = 0;
@@ -42,14 +43,17 @@ public class QueryManager {
             bar.append('\n');
             buffer.append(bar.toString( ) + "|");
             String label1 = results.getMetaData().getColumnLabel(1);
-            String label2 = results.getMetaData().getColumnLabel(2);
 
             if( label1.length( ) > size1 ) {
                 label1 = label1.substring(0, size1);
             }
-            if( label2.length( ) > size2 ) {
-                label2 = label2.substring(0, size2);
+            if(col2 != ""){
+                label2 = results.getMetaData().getColumnLabel(2);
+                if( label2.length( ) > size2 ) {
+                    label2 = label2.substring(0, size2);
+                }
             }
+
             // If the label is shorter than the column,
             // pad it with spaces
             if( label1.length( ) < size1 ) {
@@ -162,7 +166,7 @@ public class QueryManager {
 
             }
             // Stick a row count up at the top
-            if( row_count == 0 ) {
+            if( row_count == 0) {
                 buffer = new StringBuffer("No rows selected.\n");
             }
             else if( row_count == 1 ) {
@@ -392,5 +396,35 @@ public class QueryManager {
             }
             DBConnectionManager.disconnect();
             return true;
+    }
+
+    public static ArrayList<String> getForestNameWithForestFires30Days(){
+        var queryResult = new ArrayList<String>();
+        var sql = "SELECT DISTINCT * From forestfires ff WHERE ff.starttime >= CURRENT_DATE - INTERVAL '30 days'";
+        if (!DBConnectionManager.connect()) return null;
+        DBConnectionManager.beginStatement();
+        try {
+            var res = DBConnectionManager.executeStatement(sql);
+            if (res != null) {
+                assert res.metaData.getColumnCount() == 1;
+                //DatabaseMetaData dbmd = DBConnectionManager.getConnection().getMetaData();
+                // ResultSet rs = dbmd.getImportedKeys(null, null, "FORESTS");
+                while (res.resultSet.next()) {
+                    var forestNames = res.resultSet.getString("fname");
+                    System.out.println(forestNames);
+                    forestNames = String.format("%30s", forestNames);
+                    var entry = format(res.resultSet, forestNames, "", 4, 0);
+                    queryResult.add(entry);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
+        }
+        DBConnectionManager.endStatement();
+        DBConnectionManager.disconnect();
+        return queryResult;
     }
 }
