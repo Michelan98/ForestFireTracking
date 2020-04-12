@@ -1,3 +1,4 @@
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -6,6 +7,55 @@ import java.util.UUID;
 public class DatabaseApp {
     static ArrayList<String> forests_cache = null;
     static ArrayList<String> species_cache = null;
+    static ArrayList<ForestFire> forestfire_cache = null;
+    static ArrayList<PopulationSample> populationsample_cache = null;
+
+    public static void getFireImpact() {
+        if (forestfire_cache == null) {
+            forestfire_cache = QueryManager.getForestFiresFromDB();
+        }
+        var scanner = new Scanner(System.in);
+        System.out.format("\t%s\n", "Forest Fire Impact Assessment Tool");
+        System.out.println("Enter 'cancel' to quit tool.");
+        System.out.println();
+        System.out.println("LIST OF FOREST FIRES:");
+        var ctr = 0;
+        for (var ff : forestfire_cache) {
+            System.out.format("%d -\t%s\n", ctr++, ff.toString());
+        }
+        System.out.println();
+        System.out.print("Choose fire (number, -1 to cancel) > ");
+        var choice = scanner.nextInt();
+        while (choice < 0 || choice >= forestfire_cache.size()) {
+            if (choice == -1) return;
+            System.out.println("Please choose a valid index.");
+            System.out.print("Choose fire (number, -1 to cancel) > ");
+            choice = scanner.nextInt();
+        }
+        // Chose a forest fire, now for each population in that forest, get impact
+        var ff = forestfire_cache.get(choice);
+        var pops = QueryManager.getPopulationsInForestFromDB(ff.getForestName());
+        if (pops == null) {
+            System.out.println("Failed to query affected populations.");
+            return;
+        }
+        if (pops.isEmpty()) {
+            System.out.println("This forest does not have any registered populations, cannot assess impact.");
+            return;
+        }
+
+        for (var pop : pops) {
+            var before = QueryManager.getLastSampleBefore(ff.getStartTime(), pop.getSpecies(), pop.getForestName());
+            var after = QueryManager.getFirstSampleAfter(ff.getEndTime(), pop.getSpecies(), pop.getForestName());
+            // TODO: do the thing
+            if (before == null || after == null) {
+                System.out.format("Species: %s\tImpact: %s\n", pop.getSpecies(), "insufficient data");
+            } else {
+                var popdiff = after.getSampleHeadcount() - before.getSampleHeadcount();
+                System.out.format("Species: %s\tImpact: %d\n", pop.getSpecies(), popdiff);
+            }
+        }
+    }
 
     public static void addPopSample() {
         // Get the forests and species and use for entering samples
@@ -21,7 +71,7 @@ public class DatabaseApp {
         var forest = "";
         var species = "";
         System.out.format("\t%s\n", "Population Sample Entry Tool");
-        System.out.println("Enter 'cancel' to quit tool");
+        System.out.println("Enter 'cancel' to quit tool.");
         System.out.print("Enter forest name > ");
         var input = scanner.nextLine();
         if (input.equals("cancel")) return;
@@ -48,7 +98,7 @@ public class DatabaseApp {
         // Both valid forest and species entered, validate that a population exists
         var pop = QueryManager.getPopulationFromDB(forest, species);
         // sanity check, there should be only one population per forest/species pair
-        if (pop == null || pop.isEmpty() || !pop.contains(species) || !pop.contains(forest)) {
+        if (pop == null) {
             System.err.format("""
                             There is no population of %s in %s
                             Or the connection could not be established.
@@ -69,7 +119,8 @@ public class DatabaseApp {
             }
         }
         headCount = tempCount;
-        if (QueryManager.addPopulationSampleToDB(sampleId, sampleTime, headCount, species, forest)) {
+        if (QueryManager.addPopulationSampleToDB(
+                new PopulationSample(sampleId, Timestamp.valueOf(sampleTime), headCount, species, forest))) {
             System.out.println("Successfully added sample to the database!");
         } else {
             System.out.println("Failed to add sample to the database!");
@@ -149,7 +200,7 @@ public class DatabaseApp {
         pop_mgmt.addExit();
 
         var fire_mgmt = new CliMenu("Forest Fire Management Menu", CliMenu.menuType.SUB);
-        fire_mgmt.addOption("Get population impact of a fire", () -> {/*TODO*/});
+        fire_mgmt.addOption("Get population impact of a fire", DatabaseApp::getFireImpact);
         fire_mgmt.addExit();
 
         var main_menu = new CliMenu("Main Menu", CliMenu.menuType.MAIN);

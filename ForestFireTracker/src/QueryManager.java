@@ -1,3 +1,4 @@
+import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -185,49 +186,6 @@ public class QueryManager {
         return buffer.toString();
     }
 
-
-    public static void thing() {
-        // Kind of an example
-        DBConnectionManager.connect();
-        try{
-            var forestName = "Amazon Rain forest";
-            var sqlStatement = ("select * from zones where fname = ? ");
-
-            var preparedStatement = DBConnectionManager.prepareStatement(sqlStatement);
-            assert preparedStatement != null;
-            preparedStatement.setString(1, forestName);
-
-            var result = DBConnectionManager.executeQuery(preparedStatement);
-            assert result != null;
-            var resultSet = result.resultSet;
-            var metaData = result.metaData;
-
-            int columnsNumber = metaData.getColumnCount();
-
-            while(resultSet.next()){
-                for (int i = 1; i <= columnsNumber; i++) {
-                    if (i > 1) System.out.print(",  ");
-                    String columnValue = resultSet.getString(i);
-                    System.out.print(metaData.getColumnName(i) + ": " + columnValue);
-                }
-                System.out.println("");
-            }
-        } catch(SQLException se) {
-            int count = 1;
-            while (se != null) {
-                System.out.println("SQLException " + count);
-                System.out.println("Code: " + se.getErrorCode());
-                System.out.println("SqlState: " + se.getSQLState());
-                System.out.println("Error Message: " + se.getMessage());
-                se = se.getNextException();
-                count++;
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        DBConnectionManager.disconnect();
-    }
-
     /**
      * Returns the list of forest names from the DB
      * @return ArrayList of strings containing the names
@@ -353,10 +311,9 @@ public class QueryManager {
         return ret;
     }
 
-    // TODO: validate return type
-    public static ArrayList<String> getPopulationFromDB(String forest, String species) {
+    public static Population getPopulationFromDB(String forest, String species) {
         if (!DBConnectionManager.connect()) return null;
-        var ret = new ArrayList<String>();
+        Population ret = null;
         var sql = "Select * From Populations Where species=? And fname=?";
         var stmt = DBConnectionManager.prepareStatement(sql);
         if (stmt != null) try {
@@ -365,30 +322,137 @@ public class QueryManager {
             var result = DBConnectionManager.executeQuery(stmt);
             if (result == null) return null;
             var cols = result.metaData.getColumnCount();
-            while (result.resultSet.next()) {
-                for (var i = 1; i <= cols; ++i) {
-                    ret.add(result.resultSet.getString(i));
-                }
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+            if (cols != 5) return null;
+            while (result.resultSet.next())
+                ret = new Population(
+                        result.resultSet.getString(1),
+                        result.resultSet.getString(2),
+                        result.resultSet.getFloat(3),
+                        result.resultSet.getInt(4),
+                        result.resultSet.getBoolean(5));
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
         }
         DBConnectionManager.disconnect();
         return ret;
     }
 
-    public static boolean addPopulationSampleToDB(
-            UUID sampleId, LocalDateTime samplingTime, int headcount, String species, String fname){
+    public static ArrayList<Population> getPopulationsInForestFromDB(String forest) {
+        if (!DBConnectionManager.connect()) return null;
+        var ret = new ArrayList<Population>();
+        var sql = "Select * From Populations Where fname=?";
+        var stmt = DBConnectionManager.prepareStatement(sql);
+        if (stmt != null) try {
+            stmt.setString(1, forest);
+            var result = DBConnectionManager.executeQuery(stmt);
+            if (result == null) return null;
+            if (result.metaData.getColumnCount() != 5) return null;
+            while (result.resultSet.next()) {
+                ret.add(new Population(
+                        result.resultSet.getString(1),
+                        result.resultSet.getString(2),
+                        result.resultSet.getFloat(3),
+                        result.resultSet.getInt(4),
+                        result.resultSet.getBoolean(5)));
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
+        }
+        DBConnectionManager.disconnect();
+        return ret;
+    }
+
+    public static PopulationSample getLastSampleBefore(Timestamp time, String species, String fname) {
+        if (!DBConnectionManager.connect()) return null;
+        var sql = """
+                  Select * from populationsamples 
+                  Where species=? And fname=?
+                  And samplingtime<?
+                  Order By samplingtime DESC
+                  Limit 1
+                  """;
+        var stmt = DBConnectionManager.prepareStatement(sql);
+        if (stmt == null) return null;
+        PopulationSample ret = null;
+        try {
+            stmt.setString(1, species);
+            stmt.setString(2, fname);
+            stmt.setTimestamp(3, time);
+            var res = DBConnectionManager.executeQuery(stmt);
+            if (res == null) {
+                return null;
+            }
+            while (res.resultSet.next())
+                ret = new PopulationSample(
+                    (UUID)res.resultSet.getObject(1),
+                    res.resultSet.getTimestamp(2),
+                    res.resultSet.getInt(3),
+                    res.resultSet.getString(4).trim(),
+                    res.resultSet.getString(5).trim());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
+        }
+        DBConnectionManager.disconnect();
+        return ret;
+    }
+
+    public static PopulationSample getFirstSampleAfter(Timestamp time, String species, String fname) {
+        if (!DBConnectionManager.connect()) return null;
+        var sql = """
+                  Select * from populationsamples 
+                  Where species=? And fname=?
+                  And samplingtime>?
+                  Order By samplingtime ASC 
+                  Limit 1
+                  """;
+        var stmt = DBConnectionManager.prepareStatement(sql);
+        if (stmt == null) return null;
+        PopulationSample ret = null;
+        try {
+            stmt.setString(1, species);
+            stmt.setString(2, fname);
+            stmt.setTimestamp(3, time);
+            var res = DBConnectionManager.executeQuery(stmt);
+            if (res == null) {
+                return null;
+            }
+            while (res.resultSet.next())
+                ret = new PopulationSample(
+                        (UUID)res.resultSet.getObject(1),
+                        res.resultSet.getTimestamp(2),
+                        res.resultSet.getInt(3),
+                        res.resultSet.getString(4).trim(),
+                        res.resultSet.getString(5).trim());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
+        }
+        DBConnectionManager.disconnect();
+        return ret;
+    }
+
+    public static boolean addPopulationSampleToDB(PopulationSample popSample){
             if (!DBConnectionManager.connect()) return false;
 
             var sql = "Insert into populationsamples values (?, ?, ?, ?, ?)";
             var stmt = DBConnectionManager.prepareStatement(sql);
             try {
-                stmt.setObject(1, sampleId);
-                stmt.setTimestamp(2, Timestamp.valueOf(samplingTime));
-                stmt.setInt(3, headcount);
-                stmt.setString(4, species);
-                stmt.setString(5, fname);
+                stmt.setObject(1, popSample.getSampleID());
+                stmt.setTimestamp(2, popSample.getSamplingTime());
+                stmt.setInt(3, popSample.getSampleHeadcount());
+                stmt.setString(4, popSample.getSpecies());
+                stmt.setString(5, popSample.getForestName());
                 DBConnectionManager.executeUpdate(stmt);
             } catch (Exception e) {
                 System.err.println(e.getMessage());
@@ -407,8 +471,6 @@ public class QueryManager {
             var res = DBConnectionManager.executeStatement(sql);
             if (res != null) {
                 assert res.metaData.getColumnCount() == 1;
-                //DatabaseMetaData dbmd = DBConnectionManager.getConnection().getMetaData();
-                // ResultSet rs = dbmd.getImportedKeys(null, null, "FORESTS");
                 while (res.resultSet.next()) {
                     var forestNames = res.resultSet.getString("fname");
                     System.out.println(forestNames);
@@ -426,5 +488,36 @@ public class QueryManager {
         DBConnectionManager.endStatement();
         DBConnectionManager.disconnect();
         return queryResult;
+    }
+
+    public static ArrayList<ForestFire> getForestFiresFromDB() {
+        if (!DBConnectionManager.connect()) return null;
+        ArrayList<ForestFire> ret = null;
+        var sql = "Select * from forestfires";
+        DBConnectionManager.beginStatement();
+        try {
+            var res = DBConnectionManager.executeStatement(sql);
+            if (res != null) {
+                ret = new ArrayList<>();
+                var cols = res.metaData.getColumnCount();
+                if (cols != 4) return null;
+                while (res.resultSet.next()) {
+                    ret.add(new ForestFire(
+                            res.resultSet.getTimestamp(1),
+                            res.resultSet.getTimestamp(2),
+                            res.resultSet.getFloat(3),
+                            res.resultSet.getString(4).trim()
+                            ));
+                }
+            }
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+            DBConnectionManager.endStatement();
+            DBConnectionManager.disconnect();
+            return null;
+        }
+        DBConnectionManager.endStatement();
+        DBConnectionManager.disconnect();
+        return ret;
     }
 }
